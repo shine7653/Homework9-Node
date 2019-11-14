@@ -175,29 +175,53 @@ function generateHTML(data) {
       </style>
       
       <body>
-        <div class="container">
-
-        <div class="wrapper"></div>
-        <div class="photo-header"></div>
-        <img class= "photo-header href= "${data.avatar_url}" style= "size:200px,200px">
-
-         <h1 class="photo-header">Hi!</h1>
-         <h2 class="photo-header">My name is ${data.name}</h2>
-
-         <p class="links-nav">${data.location}</p>
-         <p class="nav-link">${data.html_url}</p>
-         <p class="links-nav">${data.blog}</p>
         
-         <div class="card">
-         <h3> Public repositories: ${data.public_repos}</h3>
-         <h3> Followers: ${data.followers}</h3>
-         <h3> Starred: ${data.starred}</h3>
-         <h3> Followings: ${data.following}</h3>
-         </div>
+        <div class="wrapper">
 
-         </div>
+          <div class="photo-header">
+
+            <img class= "img" href= "${data.avatar_url}" >
+            <h3 class="photo-header">Hi!</h2>
+            <h3 class="photo-header">My name is ${data.name}</h3>
+            <h6 class="photo-header"> ${data.bio}</h6>
+
+            <div class="row">
+            <p class="links-nav">${data.location}</p>
+            <p class="nav-link">${data.html_url}</p>
+            <p class="links-nav">${data.blog}</p>
+            </div>
+          </div>
+
+          <div class="container">
+
+            <div class="row">
+              <div class="card col">
+              <h4> Public repositories:</h4>
+              <h5>${data.public_repos}</h5>
+              </div>
+              <div class="card col">
+              <h4> Followers: </h4>
+              <h5>${data.followers}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="card col">
+              <h5> GitHub Stars: </h5>
+              <h5>${data.starred}</h5>
+              </div>
+              <div class="card col">
+              <h4> Followings: </h4>
+              <h5>${data.following}</h5>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        
       </body>      
       </html>
       `;
-  }
-  module.exports = generateHTML;
+}
+
+module.exports = generateHTML;

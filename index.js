@@ -5,12 +5,6 @@
 // function init() {
 // init();
 
-// ------------------------------------------------
-// 구글맵 api -- AIzaSyBnQC_vGc42XiViyzlgG_NrE88jsBovCqI
-//<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-//type="text/javascript"></script>
-
-
 const fs = require("fs");
 const axios = require("axios");
 const inquirer = require("inquirer");
@@ -38,7 +32,8 @@ function promptUser() {
           "blue",
           "pink",
           "red"
-      ]},
+        ]
+      },
       {
         type: "input",
         message: "Enter your GitHub username?",
@@ -64,13 +59,13 @@ function promptUser() {
           const htmlStr = generateHTML(res.data);
           console.log(htmlStr);
 
-    // write the html to a file
+          // write the html to a file
 
           writeFileAsync("index.html", htmlStr, function (err) {
             if (err) {
               throw err;
             }
-             console.log(`Saved ${repoNames.length} repos`);
+            console.log(`Saved ${repoNames.length} repos`);
 
             // convert that into pdf
 
@@ -82,6 +77,9 @@ function promptUser() {
 }
 
 
+// 구글맵 api -- AIzaSyBnQC_vGc42XiViyzlgG_NrE88jsBovCqI
+//<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+//type="text/javascript"></script>
 
 
 // ------------------------------------------------------
