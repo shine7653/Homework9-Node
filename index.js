@@ -9,76 +9,110 @@ const fs = require("fs");
 const axios = require("axios");
 const inquirer = require("inquirer");
 const util = require("util");
-const convertFactory = require('electron-html-to');
+// const convertFactory = require('electron-html-to');
 // ./ needed when I bring a file in one folder
 const generateHTML = require("./generateHTML");
-
 const writeFileAsync = util.promisify(fs.writeFile);
+// const puppeteer = require('puppeteer');
+// const fs = require('fs-extra');
+const pdf = require('html-pdf');
+
+const ques = [
+  {
+    type: "input",
+    message: "Enter your GitHub username?",
+    name: "username"
+  },
+  {
+    type: "list",
+    message: "What's your favorite color?",
+    name: "color",
+    choices: [
+      "green",
+      "blue",
+      "pink",
+      "red"
+    ]
+  }
+];
 
 function promptUser() {
 
   inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "Enter your GitHub username?",
-        name: "username"
-      },
-      {
-        type: "list",
-        message: "What's your favorite color?",
-        name: "color",
-        choices: [
-          "green",
-          "blue",
-          "pink",
-          "red"
-        ]
-      }
-    ])
-    .then(function (answers) {
-      console.log(answers);
+    .prompt(ques)
+    .then(function (input) {
+      // console.log(answers);
+      username = input.username;
+      favColor = input.color;
 
-      const queryUrl = `https://api.github.com/users/${answers.username}`;
-
-      axios
-        .get(queryUrl)
-        .then(function (res) {
-          // console.log(res.data);
-
-          res.data.color = answers.color
-          const htmlStr = generateHTML(res.data);
-          // console.log(htmlStr);
-
-          // write the html to a file
-          writeFileAsync("index.html", htmlStr, function (err) {
-            if (err) {
-              throw err;
-            }
-            console.log(`html generated`);
-
-          // convert that into pdf -----------------------------
-          var conversion = convertFactory({
-            converterPath: convertFactory.converters.PDF
+      const queryUrl = `https://api.github.com/users/${username}`;
+      return queryUrl;
+    })
+    .then(function (queryUrl) {
+        axios.get(queryUrl)
+          .then(function (res) {
+            // console.log(res.data
+            res.data.color = favColor;
+            calculateStars(res.data);
+          })
+          .then(function () {
+            console.log(`Successfully wrote to index.html`);
+          })
+          .catch(function (err) {
+            console.log(err);
           });
-
-          conversion({ html: '<h1>Hello World</h1>' }, function(err, result) {
-            if (err) {
-              return console.error(err);
-            }
-
-          });
-        })    
-
-      // const queryUrl = `https://api.github.com/users/${answers.username}`;
-
-      // axios
-      //   .get(queryUrl)
-      //   .then(function (res) {
-
     });
-  });
- }
+};
+
+function calculateStars(info) {
+
+  const queryUrl = `http://api.github.com/users/${username}/repo?per_page=100`
+
+  axios.get(queryUrl)
+    .then(function (repo) {
+      let stars = 0
+      for (var i = 0; i < repo.data.length; i++) {
+        stars = stars + repo.data[i].stargazers_count
+      }
+
+      info.stars = stars
+      console.log(stars);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  createAll(info);
+};
+
+function createAll(info) {
+  const html = generateHTML(info);
+  writeFileAsync("index.html", html);
+  convertPdf(html);
+};
+
+function convertPdf(htmlPdf) {
+  options = { format: 'Letter' };
+  pdf.create(htmlPdf, options).toFile('./resume.pdf', function (err, res) {
+    if (err)
+      return console.log(err);
+    console.log(res);
+  })
+};
+
+promptUser();
+    // const htmlStr = generateHTML(res.data);
+    // // console.log(htmlStr);
+
+    // // write the html to a file
+    // writeFileAsync("index.html", htmlStr, function (err) {
+    //   if (err) {
+    //     throw err;
+    //   }
+
+
+
+
+
 
 
 // 구글맵 api -- AIzaSyBnQC_vGc42XiViyzlgG_NrE88jsBovCqI
@@ -86,7 +120,6 @@ function promptUser() {
 //type="text/javascript"></script>
 
 
-promptUser();
 // -----------------------------------------
 /*
 const axios = require("axios");

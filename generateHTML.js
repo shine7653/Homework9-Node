@@ -181,16 +181,15 @@ function generateHTML(data) {
         <div class="photo-header">
 
             <img src="${data.avatar_url}" class="img">
-            <h2 class="photo-header">Hi!</h2>
-            <h3 class="photo-header">My name is ${data.name}</h3>
-
-              <div class="links-nav">
-                <ul>
-                    <li class="nav-link">${data.location}</li>
-                    <li class="nav-link"><a href="${data.html_url}">GitHub</a></li>
-                    <li class="nav-link"><a href="${data.blog}">Blog</a></li>
-                </ul>
-              </div>
+            <h2>Hi!</h2>
+            <h3>My name is ${data.name}</h3>
+            
+              <ul class="links-nav">
+                  <li class="nav-link">${data.location}</li>
+                  <li class="nav-link"><a href="${data.html_url}">GitHub</a></li>
+                  <li class="nav-link"><a href="${data.blog}">Blog</a></li>
+              </ul>
+              
         </div>
 
         <div class="main">
