@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/shine7653/Homework9-Node#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "electron-html-to": "^2.6.0",
     "fs": "0.0.1-security",
     "fs-extra": "^8.1.0",
